@@ -1,0 +1,1 @@
+Implementation of a stub in Java using Spring. The stub implements a REST API with two methods: GET and POST. [1] GET returns a static JSON: {"login":"Login1","status":"ok"} [2] POST accepts JSON with two parameters: login and password ({"login":"...","password":".."}) returns: ({"login":"...","password":"..","date":"yyyy-MM-dd HH:mm:ss"}).
