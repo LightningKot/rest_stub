@@ -1,40 +1,36 @@
-package com.example;
+package com.example.controller;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.example.dto.StubResponse;
+import com.example.service.StubDelay;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
-
 @RestController
 @RequestMapping("/restapi/stub-v1")  // Базовый путь для всех методов
+@RequiredArgsConstructor
 public class StubRestController {
 
-    @Value("${stub.delay.enabled:true}")
-    private boolean delayEnabled;
+    //@Value("${stub.delay.enabled:true}")
+    //private boolean delayEnabled;
+    private final StubDelay delay;
+
     /*
      GET-метод: возвращает статичный JSON
      Пример запроса: GET http://localhost:8080/restapi/stub-v1/status
      */
     @GetMapping(value = "/status",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, String>> getStatus() throws InterruptedException {
-        Map<String, String> response = new HashMap<>();
-        response.put("login", "Login1");
-        response.put("status", "ok");
+    public ResponseEntity<StubResponse> getStatus()  {
 
-        if (delayEnabled){
-            int delay = ThreadLocalRandom.current().nextInt(1000, 2001);
-            Thread.sleep(delay);
-        }
+        StubResponse response = StubResponse.withStatus("Login1", "ok");
+        delay.sleep_ms();
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
     }
-
     /*
      POST-метод: принимает логин/пароль, возвращает их же + дату
      Пример запроса: POST http://localhost:8080/restapi/stub-v1/login
@@ -43,14 +39,10 @@ public class StubRestController {
     @PostMapping(value = "/login",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<LoginResp> postLogin(@RequestBody LoginReq request) throws InterruptedException{
-        System.out.println("Получен запрос: " + request);
-        LoginResp response = new LoginResp(request.getLogin(), request.getPassword());
-
-        if (delayEnabled){
-            int delay = ThreadLocalRandom.current().nextInt(1000, 2001);
-            Thread.sleep(delay);
-        }
+    public ResponseEntity<StubResponse> postLogin(@RequestBody StubResponse request) {
+        //System.out.println("Получен запрос: " + request);
+        StubResponse response = StubResponse.withDate(request.getLogin(), request.getPass());
+        delay.sleep_ms();
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
