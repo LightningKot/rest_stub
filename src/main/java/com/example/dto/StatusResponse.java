@@ -8,30 +8,18 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class StubResponse {
+public class StatusResponse {
     @JsonProperty("login")
     @NotNull(message = "Login не может быть null")
     @NotBlank(message = "Login не может быть пустым")
     @Size(min = 8, max = 20, message = "Login должен быть от 8 до 20 символов")
     private String login;
-    @JsonProperty("password")
-    @NotNull(message = "password не может быть null")
-    @NotBlank(message = "password не может быть пустым")
-    @Size(min = 8, max = 20, message = "password должен быть от 8 до 20 символов")
-    private String pass;
-    @JsonProperty("date")
-    private String date;
 
-    public static StubResponse withDate(String login, String password) {
-        return new StubResponse(login, password, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-    }
-
-
+    @JsonProperty("status")
+    private String status;
 }
