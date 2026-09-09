@@ -1,6 +1,7 @@
 package com.example.dao;
 
 
+import com.example.exception.UserNotFoundException;
 import com.example.model.User;
 
 import java.sql.*;
@@ -139,7 +140,7 @@ public class DataBaseWorker {
 
     //[2] insert
     public static int insertUser(User user) {
-        // Используем CTE для атомарной вставки в обе таблицы
+
         String sql = """
             WITH inserted_auth AS (
                 INSERT INTO authentication_data (login, password)
@@ -181,7 +182,7 @@ public class DataBaseWorker {
             conn = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
             stmt = conn.createStatement();
 
-            String sql = "SELECT a.login, a.password, p.email " +
+            String sql = "SELECT a.login, a.password, p.email, a.created_at " +
                     "FROM authentication_data a " +
                     "JOIN users_profile p ON a.login = p.login " +
                     "WHERE a.login = '" + login + "'";
@@ -193,7 +194,11 @@ public class DataBaseWorker {
                 user.setLogin(rs.getString("login"));
                 user.setPass(rs.getString("password"));
                 user.setEmail(rs.getString("email"));
+                user.setDate(rs.getString("created_at"));
                 return Optional.of(user);
+            }
+            else {
+                throw new UserNotFoundException(login);
             }
 
         } catch (SQLException e) {
