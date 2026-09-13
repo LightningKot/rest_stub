@@ -1,6 +1,8 @@
 server:
   port: 8080
-
+  tomcat:
+    mbeanregistry:
+      enabled: true
 # Actuator + Micrometer
 management:
   server:
