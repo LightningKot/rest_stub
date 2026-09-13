@@ -1,12 +1,10 @@
 server:
   port: 8080
 
-# ============================================
-# НАСТРОЙКИ ACTUATOR + MICROMETER
-# ============================================
+# Actuator + Micrometer
 management:
   server:
-    port: 8081  # Отдельный порт для метрик
+    port: 8081
   endpoints:
     web:
       exposure:
@@ -16,6 +14,11 @@ management:
     export:
       prometheus:
         enabled: true
+    enable:
+      tomcat:
+        global: true       
+        threads: true
+        sessions: true
     tags:
       application: stub-app
       environment: docker

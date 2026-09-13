@@ -7,7 +7,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class StubDelay {
-
     @Value("${stub.delay.enabled:true}")
     private boolean delayEnabled;
     @Value(("${stub.delay.min:1000}"))
