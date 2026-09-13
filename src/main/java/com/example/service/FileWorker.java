@@ -71,7 +71,7 @@ public class FileWorker {
             return lines.get(random.nextInt(lines.size()));
         } catch (IOException e) {
             log.error("Failed to write to file: {}", path, e);
-            return null;
+            return "";
         }
     }
 }

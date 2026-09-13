@@ -96,7 +96,6 @@ public class StubRestController {
                     httpRequest.getRequestId()));
         }
         catch (RuntimeException e) {
-            //throw new RuntimeException(e);
             return ResponseEntity.status(400).body(new ErrorResponse(400,
                     "Bad Request",
                     "RuntimeException: " + e.getMessage(),
@@ -108,28 +107,18 @@ public class StubRestController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUserByFile(HttpServletRequest httpRequest)  {
         //delay.sleep_ms();
-
-        try {
-            String out = fwk.getRandomLine();
-            if (!out.isEmpty()) {
-                System.out.println(out);
-                return ResponseEntity.status(HttpStatus.OK).body(out);
-            } else {
-                System.out.println("[NOT FOUND]");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(
-                        HttpStatus.NOT_FOUND.value(),
-                        "Error",
-                        "File operation failed",
-                        httpRequest.getRequestURI()
-                ));
-            }
-        } catch (UserNotFoundException e){
-            return ResponseEntity.status(400).body(new ErrorResponse(400,
-                    "User NOT found",
-                    "UserNotFoundException: " + e.getMessage(),
-                    httpRequest.getRequestId()));
+        String out = fwk.getRandomLine();
+        if (!out.isEmpty() && !out.equals("No data")) {
+            System.out.println(out);
+            return ResponseEntity.status(HttpStatus.OK).body(out);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(
+                    HttpStatus.NOT_FOUND.value(),
+                    "Error",
+                    "File operation failed",
+                    httpRequest.getRequestURI()
+            ));
         }
-
     }
 
 }
