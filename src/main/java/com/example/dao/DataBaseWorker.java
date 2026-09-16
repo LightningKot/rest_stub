@@ -5,6 +5,7 @@ import com.example.exception.DatabaseException;
 import com.example.exception.UserNotFoundException;
 import com.example.model.User;
 import com.example.service.FileWorker;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -13,9 +14,9 @@ import java.util.Optional;
 @Repository
 public class DataBaseWorker {
 
-    private static final String USER = "qwe";
-    private static final String PASSWORD = "qwe123";
-    private static final String DATABASE_URL = "jdbc:postgresql://192.168.0.100:5432/testdb";
+    @Value("${spring.datasource.username}") String USER = "qwe";
+    @Value("${spring.datasource.password}") String PASSWORD = "qwe123";
+    @Value("${spring.datasource.url}") String DATABASE_URL = "jdbc:postgresql://192.168.1.100:5432/testdb";
     private static final String DB_DRIVER_POSTGRES = "org.postgresql.Driver";
 
     private final FileWorker fdisk;
@@ -179,10 +180,9 @@ public class DataBaseWorker {
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected;
 
-        } catch (DatabaseException e) {
-            // Проверяем SQLState и превращаем в более точное исключение
+        } /*catch (DatabaseException e) {
             throw e;  // пробрасываем дальше как есть
-        }
+        }*/
         catch (SQLException e) {
             System.err.println("[ERROR] Ошибка при вставке пользователя: " + e.getMessage());
             throw new DatabaseException("Failed to insert user: " + user.getLogin(), e);
@@ -219,12 +219,9 @@ public class DataBaseWorker {
                 }
             }
 
-
         } catch (SQLException e) {
-            System.err.println("[ERROR] Ошибка при поиске пользователя: " + e.getMessage());
+            throw new DatabaseException("Failed to find by login user: " + login, e);
         }
-
-        return Optional.empty();
     }
 
 }

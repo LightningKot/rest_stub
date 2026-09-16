@@ -14,15 +14,15 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 public class User {
     @NotBlank(message = "Login is required and cannot be empty")
-    @Size(min = 3, max = 50, message = "Login must be between 3 and 50 characters")
+    //@Size(min = 3, max = 50, message = "Login must be between 3 and 50 characters")
     private String login;
 
     @NotBlank(message = "email is required and cannot be empty")
-    @Size(min = 10, max = 50, message = "email must be between 10 and 50 characters")
+    //@Size(min = 10, max = 50, message = "email must be between 10 and 50 characters")
     private String email;
 
     @NotBlank(message = "password is required and cannot be empty")
-    @Size(min = 10, max = 50, message = "password must be between 10 and 50 characters")
+    //@Size(min = 10, max = 50, message = "password must be between 10 and 50 characters")
     @JsonProperty("password")
     private String pass;
 
