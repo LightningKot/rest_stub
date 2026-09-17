@@ -14,9 +14,9 @@ import java.util.Optional;
 @Repository
 public class DataBaseWorker {
 
-    @Value("${spring.datasource.username}") String USER = "qwe";
-    @Value("${spring.datasource.password}") String PASSWORD = "qwe123";
-    @Value("${spring.datasource.url}") String DATABASE_URL = "jdbc:postgresql://192.168.1.100:5432/testdb";
+    @Value("${spring.datasource.username}") String USER;
+    @Value("${spring.datasource.password}") String PASSWORD;
+    @Value("${spring.datasource.url}") String DATABASE_URL;
     private static final String DB_DRIVER_POSTGRES = "org.postgresql.Driver";
 
     private final FileWorker fdisk;

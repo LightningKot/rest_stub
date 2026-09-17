@@ -46,35 +46,13 @@ public class StubRestController {
 
         try {
             Optional<User> selectUser = dbWorker.findUserByLogin(login); // add try catch
-            if (selectUser.isPresent()) { //убрать излишние проверки
-                System.out.println(selectUser.get());
-                return ResponseEntity.status(HttpStatus.OK).body(selectUser.get());
-            } else {
-                //System.out.println("[NOT FOUND] User WITH LOGIN " + login);
-                return ResponseEntity.status(500).body(new ErrorResponse(
-                        500,
-                        "User NOT Found",
-                        "Database operation failed",
-                        httpRequest.getRequestURI()
-                ));
-            }
+            return ResponseEntity.status(HttpStatus.OK).body(selectUser.get());
         } catch (UserNotFoundException e){
             return ResponseEntity.status(500).body(new ErrorResponse(500,
                     "User NOT found",
                     "UserNotFoundException: " + e.getMessage(),
                     httpRequest.getRequestURI()));
         }
-        /*catch (DatabaseException e) {
-            //log.error("DB error", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ErrorResponse(
-                            500,
-                            "Database Error",
-                            "Database operation failed",
-                            httpRequest.getRequestURI()
-                    )
-            );
-        }*/
 
     }
 
