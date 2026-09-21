@@ -16,6 +16,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -35,6 +38,16 @@ public class StubRestController {
     //    this.delay = delay;
     //    this.dbWorker = dbWorker;
     //}
+    private static final List<byte[]> LEAK = new ArrayList<>();
+
+    @GetMapping("/bad")
+    public ResponseEntity<?> bad() {
+        // блокирует поток Tomcat, UI зависает, ОС может убить JVM
+
+        LEAK.add(new byte[1024 * 1024]);
+        return ResponseEntity.ok("Bad req");
+
+    }
 
     //GET http://localhost:8080/restapi/stub-v-with-bd/getuser
     @GetMapping(value = "/getuser",
