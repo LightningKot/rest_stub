@@ -20,6 +20,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -32,6 +34,14 @@ public class StubRestController {
     private final DataBaseWorker dbWorker;
     private final FileWorker fwk;
 
+    private static final List<byte[]> LEAK = new ArrayList<>();
+
+
+    @GetMapping(value = "/getbadreq")
+    public ResponseEntity<?> getBadReq()  {
+        LEAK.add(new byte[1024 * 1024]);
+        return ResponseEntity.ok("Bad req");
+    }
     //public StubRestController(StubDelay delay, DataBaseWorker dbWorker) {
     //    this.delay = delay;
     //    this.dbWorker = dbWorker;
