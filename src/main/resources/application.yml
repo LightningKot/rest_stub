@@ -21,6 +21,8 @@ management:
         global: true       
         threads: true
         sessions: true
+      hikaricp: true          # hikaricp
+      jdbc: true              #
     tags:
       application: stub-app
       environment: docker

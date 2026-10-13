@@ -34,12 +34,12 @@ public class StubRestController {
     private final DataBaseWorker dbWorker;
     private final FileWorker fwk;
 
-    private static final List<byte[]> LEAK = new ArrayList<>();
+    private static final List<byte[]> LEAK = new ArrayList<>(); //static -- GC root
 
 
     @GetMapping(value = "/getbadreq")
     public ResponseEntity<?> getBadReq()  {
-        LEAK.add(new byte[1024 * 1024]);
+        LEAK.add(new byte[1024 * 1024]); // add 1 МБ for req
         return ResponseEntity.ok("Bad req");
     }
     //public StubRestController(StubDelay delay, DataBaseWorker dbWorker) {
